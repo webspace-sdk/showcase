@@ -38,4 +38,4 @@ This capture went from a 107 MB `.ply` to a 7.3 MB `.spz`. Put the `.spz` next t
 
 Capture: [steam studio](https://www.steam-studio.jp), released under CC0. Built with the
 [Webspace Engine](https://github.com/webspace-sdk/webspace-engine) (MPL-2.0), preview build
-[`0.10.0-alpha.3`](https://github.com/webspace-sdk/run).
+[`0.10.0-alpha.4`](https://github.com/webspace-sdk/run).
