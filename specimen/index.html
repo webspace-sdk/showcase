@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Specimen</title>
+<meta charset="utf-8" />
+<script src="https://webspaces.space/run/0.10.0-alpha.3/webspace.js"></script>
+<meta name="description" content="A potted cactus, captured from 427 photographs as 452,065 Gaussian splats, shown at forty times life size. Water it together." />
+<meta property="og:title" content="Specimen — a webspace" />
+<meta property="og:description" content="A real cactus, captured as 452,065 Gaussian splats, standing forty times life size in a desert. Water it together." />
+<meta property="og:image" content="https://webspaces.space/showcase/specimen/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="webspace.environment.type" content="terrain" />
+<meta name="webspace.environment.terrain.type" content="flat" />
+<meta name="webspace.environment.fog" content="off" />
+<meta name="webspace.environment.wrap" content="off" />
+<meta name="webspace.environment.terrain.colors.sky" content="#9fc3e0" />
+<meta name="webspace.environment.terrain.colors.ground" content="#e2c49a" />
+<meta name="webspace.environment.terrain.colors.grass" content="#c9a66f" />
+<meta name="webspace.environment.terrain.colors.edge" content="#a9825a" />
+<meta name="webspace.environment.terrain.colors.rock" content="#b98c62" />
+<meta name="webspace.environment.terrain.colors.leaves" content="#8a9a5b" />
+<meta name="webspace.environment.terrain.colors.bark" content="#6b4a2f" />
+<meta name="webspace.environment.terrain.colors.water" content="#6aa5b8" />
+<meta name="webspace.environment.spawn_point.transform" content="translate3d(0cm, 0cm, 1400cm)" />
+<meta name="webspace.environment.spawn_point.radius" content="3" />
+</head>
+<body>
+<model id="cactus1" src="cactus.spz" style="transform: translate3d(0cm, 0cm, 0cm) scale3d(4, 4, 4)"></model>
+<label id="plaque1" style="color: #2b2118; background-color: #efe6d6; font-family: serif; transform: translate3d(-260cm, 150cm, 620cm) rotate3d(0, 1, 0, 0.35rad) scale3d(1.3, 1.3, 1.3)"><h2>Specimen No. 1</h2><p><em>Mammillaria</em>, in a clay pot, on the turntable it was captured on.</p><p>Reconstructed from 427 photographs as 452,065 Gaussian splats. Shown at forty times life size.</p><p>Water it together: it grows while people are here.</p><p>Capture: steam studio, CC0 (steam-studio.jp)</p></label>
+<div id="watercn" style="font-family: emoji; transform: translate3d(230cm, 140cm, 620cm) scale3d(1.4, 1.4, 1.4)">💧</div>
+<script type="module">
+  await webspace.ready;
+  const cactus = document.getElementById("cactus1");
+  const can = document.getElementById("watercn");
+  const CAN = "translate3d(230cm, 140cm, 620cm)";
+
+  // Like the turntable it was captured on: one slow revolution every two minutes, in step for everyone
+  let size = 4;
+  const spin = () => {
+    const a = ((Date.now() / 120000) % 1) * Math.PI * 2;
+    cactus.style.transform = `rotateY(${a.toFixed(4)}rad) scale3d(${size}, ${size}, ${size})`;
+    requestAnimationFrame(spin);
+  };
+  spin();
+
+  // Watering is shared: everyone sees the same count, and late arrivals see how much it has grown
+  can.addEventListener("pointerenter", () => (can.style.transform = `${CAN} scale3d(1.7, 1.7, 1.7)`));
+  can.addEventListener("pointerleave", () => (can.style.transform = `${CAN} scale3d(1.4, 1.4, 1.4)`));
+  can.addEventListener("click", () => webspace.state.set("water", (webspace.state.get("water") || 0) + 1));
+
+  let target = 4;
+  webspace.state.addEventListener("change", ({ detail: { key, value } }) => {
+    if (key !== "water") return;
+    target = 4 * Math.min(1.8, 1 + value * 0.04);
+    // a drop falls onto the cactus
+    const drop = document.createElement("div");
+    drop.style.fontFamily = "emoji";
+    document.body.append(drop);
+    drop.textContent = "💧";
+    const t0 = performance.now();
+    const fall = () => {
+      const t = (performance.now() - t0) / 1400;
+      if (t >= 1) return drop.remove();
+      drop.style.transform = `translate3d(0cm, ${(1400 * (1 - t * t)).toFixed(0)}cm, 0cm) scale3d(2, 2, 2)`;
+      requestAnimationFrame(fall);
+    };
+    fall();
+  });
+  const grow = () => {
+    size += (target - size) * 0.02;
+    requestAnimationFrame(grow);
+  };
+  grow();
+</script>
+</body>
+</html>
