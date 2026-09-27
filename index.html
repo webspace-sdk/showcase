@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Showcase — Webspaces</title>
+<meta name="description" content="Worlds made of plain HTML files. Walk into them with whoever else is there." />
+<meta property="og:title" content="Webspaces Showcase" />
+<meta property="og:description" content="Worlds made of plain HTML files. Walk into them with whoever else is there." />
+<meta property="og:image" content="https://webspaces.space/showcase/stargazer/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="https://webspaces.space/assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spectral:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --night: #061139;
+    --ink: #ecebf7;
+    --dim: #9aa0c8;
+    --faint: #3a4474;
+    --ember: #ff8a4c;
+    --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --body: "Spectral", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--night); }
+  body {
+    margin: 0; color: var(--ink); font: 300 18px/1.6 var(--body);
+    background:
+      radial-gradient(900px 500px at 85% -10%, #16266e55, transparent 70%),
+      radial-gradient(700px 400px at -10% 30%, #2a1a5e33, transparent 70%),
+      var(--night);
+    min-height: 100vh;
+  }
+  /* grain */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .08; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 5vw, 56px); }
+
+  header { padding: clamp(56px, 10vw, 120px) 0 clamp(40px, 6vw, 72px); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+  .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-bottom: 28px; }
+  .eyebrow a { text-decoration: none; border-bottom: 1px solid var(--faint); }
+  h1 { font: 400 clamp(52px, 9vw, 120px)/.92 var(--display); margin: 0; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--dim); }
+  .lede { max-width: 34ch; color: var(--dim); font-style: italic; margin: 0; }
+  @media (max-width: 760px) { header { grid-template-columns: 1fr; } }
+
+  .rule { height: 1px; background: linear-gradient(90deg, var(--faint), transparent); margin: 0 0 clamp(40px, 6vw, 80px); }
+
+  .plate { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; margin-bottom: clamp(72px, 10vw, 140px); opacity: 0; transform: translateY(14px); animation: rise 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+  .plate:nth-child(even) { grid-template-columns: 5fr 7fr; }
+  .plate:nth-child(even) .figure { order: 2; }
+  @media (max-width: 860px) { .plate, .plate:nth-child(even) { grid-template-columns: 1fr; } .plate:nth-child(even) .figure { order: 0; } }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  .figure { position: relative; display: block; border-radius: 3px; overflow: hidden; box-shadow: 0 40px 80px -40px #000c, 0 0 0 1px #ffffff12; aspect-ratio: 1200 / 630; background: #0a1440; }
+  .figure img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.6s cubic-bezier(.2,.7,.2,1), filter .6s; filter: saturate(.95); }
+  .figure:hover img { transform: scale(1.035); filter: saturate(1.1); }
+  .figure .enter { position: absolute; left: 18px; bottom: 16px; font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #fff; background: #06113999; backdrop-filter: blur(6px); padding: 9px 13px; border-radius: 2px; opacity: 0; transform: translateY(6px); transition: .4s; }
+  .figure:hover .enter, .figure:focus-visible .enter { opacity: 1; transform: none; }
+
+  .no { font: 500 12px var(--mono); letter-spacing: .2em; color: var(--ember); text-transform: uppercase; }
+  .plate h2 { font: 400 clamp(40px, 5vw, 64px)/1 var(--display); margin: 14px 0 18px; }
+  .plate p { margin: 0 0 18px; max-width: 42ch; }
+  .source { font: 400 12.5px/1.7 var(--mono); color: #c9cdf0; background: #030a26; border: 1px solid #ffffff10; border-radius: 3px; padding: 14px 16px; margin: 22px 0; overflow-x: auto; white-space: pre; }
+  .source .t { color: #8fb4ff; } .source .a { color: #ffb38a; } .source .c { color: #5d6594; font-style: italic; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px 26px; font: 500 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .links a { text-decoration: none; border-bottom: 1px solid var(--faint); padding-bottom: 3px; transition: border-color .3s, color .3s; }
+  .links a:hover { border-color: var(--ember); color: #fff; }
+  .links a.primary { color: #fff; border-color: var(--ember); }
+  .tags { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .06em; margin-top: 22px; }
+
+  footer { border-top: 1px solid #ffffff10; padding: 40px 0 70px; color: var(--dim); font-size: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; }
+  footer p { margin: 0; max-width: 60ch; }
+  footer code { font: 400 13px var(--mono); color: #c9cdf0; }
+  @media (prefers-reduced-motion: reduce) { .plate { animation: none; opacity: 1; transform: none; } .figure img { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow"><a href="https://webspaces.space">Webspaces</a> &nbsp;/&nbsp; Showcase</div>
+      <h1>Worlds, written<br /><em>in HTML.</em></h1>
+    </div>
+    <p class="lede">Each of these is a web page you can walk into, with whoever else happens to be there. View source on any of them. It's all in the file.</p>
+  </header>
+  <div class="rule"></div>
+
+  <main id="plates">
+    <article class="plate" style="animation-delay: .1s">
+      <a class="figure" href="stargazer/" aria-label="Enter Stargazer">
+        <img src="stargazer/preview.png" alt="A spiral galaxy of glowing points hangs over a dark hill at night, beside a small sign reading Stargazer." loading="lazy" />
+        <span class="enter">Enter world →</span>
+      </a>
+      <div>
+        <div class="no">No. 01</div>
+        <h2>Stargazer</h2>
+        <p>Lie on a hill under a galaxy with whoever else is here. Touch the ✨ and a shooting star crosses everyone's sky at once.</p>
+        <div class="source"><span class="c">&lt;!-- 335,701 Gaussian splats, glowing --&gt;</span>
+<span class="t">&lt;model</span> <span class="a">src</span>="galaxy.spz"
+  <span class="a">style</span>="mix-blend-mode: plus-lighter;
+         transform: rotateX(-0.7rad)"<span class="t">&gt;</span></div>
+        <div class="links">
+          <a class="primary" href="stargazer/">Enter</a>
+          <a href="https://github.com/webspace-sdk/showcase/tree/main/stargazer">View source</a>
+        </div>
+        <div class="tags">splats · live DOM · shared state · night sky</div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p>A webspace is a plain <code>.html</code> file with one script tag. Open it in Chrome and you're standing in it; edit the world and the file changes. <a href="https://webspaces.space">Start one →</a></p>
+    <p><a href="https://webspaces.space/llms.txt">llms.txt</a> &nbsp;·&nbsp; <a href="https://github.com/webspace-sdk/webspace-engine">Engine</a></p>
+  </footer>
+</div>
+</body>
+</html>

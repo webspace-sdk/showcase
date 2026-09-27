@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>Stargazer</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="Lie on a hill under a galaxy of 335,701 Gaussian splats with whoever else is here. A world made of one HTML file." />
+<meta property="og:title" content="Stargazer — a webspace" />
+<meta property="og:description" content="Lie on a hill under a galaxy of Gaussian splats with whoever else is here. The whole world is one HTML file." />
+<meta property="og:image" content="https://webspaces.space/showcase/stargazer/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<script src="https://webspaces.space/run/0.10.0-alpha.2/webspace.js"></script>
+<meta name="webspace.environment.type" content="terrain" />
+<meta name="webspace.environment.terrain.type" content="hills" />
+<meta name="webspace.environment.terrain.seed" content="7" />
+<meta name="webspace.environment.fog" content="off" />
+<meta name="webspace.environment.wrap" content="off" />
+<meta name="webspace.environment.terrain.colors.sky" content="#05060f" />
+<meta name="webspace.environment.terrain.colors.ground" content="#10162b" />
+<meta name="webspace.environment.terrain.colors.grass" content="#1d2a4f" />
+<meta name="webspace.environment.terrain.colors.edge" content="#070a16" />
+<meta name="webspace.environment.terrain.colors.rock" content="#2a2f45" />
+<meta name="webspace.environment.terrain.colors.leaves" content="#3b2a6b" />
+<meta name="webspace.environment.terrain.colors.bark" content="#141225" />
+<meta name="webspace.environment.terrain.colors.water" content="#0b1740" />
+<meta name="webspace.environment.spawn_point.transform" content="translate3d(0cm, 0cm, 200cm)" />
+<meta name="webspace.environment.spawn_point.radius" content="2" />
+<meta name="webspace.permissions.content_change_role" content="owner" />
+<script type="module">
+  await webspace.ready;
+
+  // The galaxy turns slowly: one revolution every ten minutes, in step for everyone (it's just the clock)
+  const GALAXY = "translate3d(0cm, 19000cm, -21000cm) rotateX(-0.7rad)";
+  const layers = ["galaxy1", "galdust"].map(id => document.getElementById(id));
+  const turn = () => {
+    const a = ((Date.now() / 600000) % 1) * Math.PI * 2;
+    for (const el of layers) el.style.transform = `${GALAXY} rotateY(${a.toFixed(4)}rad) scale3d(1.5, 1.5, 1.5)`;
+    requestAnimationFrame(turn);
+  };
+  turn();
+
+  // Wishes: touching the star sends a shooting star across everyone's sky
+  const star = document.getElementById("wishing");
+  const meteor = document.getElementById("meteor1");
+  const STAR = "translate3d(0cm, 250cm, -250cm)";
+
+  star.addEventListener("pointerenter", () => (star.style.transform = `${STAR} scale3d(1.3, 1.3, 1.3)`));
+  star.addEventListener("pointerleave", () => (star.style.transform = STAR));
+  star.addEventListener("click", () => webspace.state.set("wish", { seed: Math.random(), at: Date.now() }));
+
+  let flying = null;
+  webspace.state.addEventListener("change", ({ detail: { key, value } }) => {
+    if (key !== "wish" || !value || Date.now() - value.at > 4000) return; // don't replay old wishes to late joiners
+    flying = { ...value, start: performance.now() };
+    meteor.hidden = false;
+  });
+
+  const fly = () => {
+    requestAnimationFrame(fly);
+    if (!flying) return;
+    const t = (performance.now() - flying.start) / 1800;
+    if (t >= 1) {
+      flying = null;
+      meteor.hidden = true;
+      return;
+    }
+    // Same path for everyone: derived from the shared seed
+    const yaw = flying.seed * Math.PI * 2;
+    const dir = [Math.cos(yaw), -0.35, -Math.sin(yaw)];
+    const [sx, sy, sz] = [-dir[0] * 9000, 16000, -12000 - dir[2] * 9000];
+    const d = t * 18000;
+    const [x, y, z] = [sx + dir[0] * d, sy + dir[1] * d, sz + dir[2] * d];
+    meteor.style.opacity = Math.sin(t * Math.PI).toFixed(3);
+    meteor.style.transform = `translate3d(${x.toFixed(0)}cm, ${y.toFixed(0)}cm, ${z.toFixed(0)}cm) rotateY(${yaw.toFixed(3)}rad) rotateZ(-0.34rad) scale3d(4, 4, 4)`;
+  };
+  fly();
+</script>
+</head>
+<body>
+<model id="galaxy1" src="galaxy.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(0cm, 19000cm, -21000cm) rotateX(-0.7rad) scale3d(1.5, 1.5, 1.5)"></model>
+<model id="galdust" src="galaxy-dust.spz" style="transform: translate3d(0cm, 19000cm, -21000cm) rotateX(-0.7rad) scale3d(1.5, 1.5, 1.5)"></model>
+<model id="stars01" src="stars.spz" style="mix-blend-mode: plus-lighter"></model>
+<model id="meteor1" src="meteor.spz" hidden="" style="mix-blend-mode: plus-lighter; opacity: 0; transform: translate3d(0cm, 16000cm, -12000cm)"></model>
+<label id="welcome" style="color: #e9e6ff; background-color: transparent; -webkit-text-stroke-color: #0b0d24; font-family: serif; transform: translate3d(-230cm, 330cm, -380cm) rotate3d(0, 1, 0, 0.4rad) scale3d(2.2, 2.2, 2.2)"><h1>Stargazer</h1><p>Lie back. Look up.</p></label>
+<label id="aboutit" style="color: #f1efff; background-color: #1b1f4a; font-family: serif; transform: translate3d(240cm, 280cm, -340cm) rotate3d(0, 1, 0, -0.45rad) scale3d(1.6, 1.6, 1.6)"><p>The galaxy overhead is 335,701 Gaussian splats, grown by a short script.</p><p>The stars, the meteor, this sign: everything here is written in this page's HTML.</p><p><strong>Touch the ✨ to make a wish.</strong> Everyone here will see it.</p></label>
+<div id="wishing" style="font-family: emoji; transform: translate3d(0cm, 250cm, -250cm)">✨</div>
+</body>
+</html>
