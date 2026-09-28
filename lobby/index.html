@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Webspaces Lobby</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="The showcase, as a place. Walk up to a world and step through; meet whoever else is browsing." />
+<script src="https://webspaces.space/run/0.10.0-alpha.10/webspace.js"></script>
+<meta property="og:title" content="Webspaces Lobby" />
+<meta property="og:description" content="The showcase, as a place. Walk up to a world and step through." />
+<meta property="og:image" content="https://webspaces.space/showcase/lobby/preview.png" />
+<meta name="webspace.environment.type" content="terrain" />
+<meta name="webspace.environment.terrain.type" content="flat" />
+<meta name="webspace.environment.fog" content="off" />
+<meta name="webspace.environment.wrap" content="off" />
+<meta name="webspace.environment.sky" content="sky.jpg" />
+<meta name="webspace.environment.terrain.colors.sky" content="#3a3350" />
+<meta name="webspace.environment.terrain.colors.ground" content="#2a2733" />
+<meta name="webspace.environment.terrain.colors.grass" content="#34304a" />
+<meta name="webspace.environment.terrain.colors.edge" content="#1b1824" />
+<meta name="webspace.environment.terrain.colors.rock" content="#4a4658" />
+<meta name="webspace.environment.terrain.colors.leaves" content="#6b5a8a" />
+<meta name="webspace.environment.terrain.colors.bark" content="#2c2433" />
+<meta name="webspace.environment.terrain.colors.water" content="#2a3a5a" />
+<meta name="webspace.environment.spawn_point.transform" content="translate3d(0cm, 0cm, 250cm)" />
+<meta name="webspace.environment.spawn_point.radius" content="1" />
+</head>
+<body>
+<label id="welcome" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(0cm, 440cm, -520cm) scale3d(2.4, 2.4, 2.4)"><h1>Webspaces</h1><p>Each of these is a web page you can walk into. Touch one to step through.</p></label>
+<img id="door-stargazer" src="../stargazer/preview.png" style="transform: translate3d(-357cm, 270cm, -349cm) rotateY(0.890rad) scale3d(3.2, 3.2, 3.2)">
+<label id="title-stargazer" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-343cm, 160cm, -338cm) rotateY(0.890rad) scale3d(1.7, 1.7, 1.7)"><h2>Stargazer</h2><p>A galaxy of Gaussian splats.</p></label>
+<img id="door-specimen" src="../specimen/preview.png" style="transform: translate3d(-134cm, 270cm, -500cm) rotateY(0.297rad) scale3d(3.2, 3.2, 3.2)">
+<label id="title-specimen" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-129cm, 160cm, -482cm) rotateY(0.297rad) scale3d(1.7, 1.7, 1.7)"><h2>Specimen</h2><p>A real cactus, captured.</p></label>
+<img id="door-tonegarden" src="../tonegarden/preview.png" style="transform: translate3d(134cm, 270cm, -500cm) rotateY(-0.297rad) scale3d(3.2, 3.2, 3.2)">
+<label id="title-tonegarden" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(129cm, 160cm, -482cm) rotateY(-0.297rad) scale3d(1.7, 1.7, 1.7)"><h2>Tone Garden</h2><p>Make music together.</p></label>
+<img id="door-campfire" src="../campfire/preview.png" style="transform: translate3d(357cm, 270cm, -349cm) rotateY(-0.890rad) scale3d(3.2, 3.2, 3.2)">
+<label id="title-campfire" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(343cm, 160cm, -338cm) rotateY(-0.890rad) scale3d(1.7, 1.7, 1.7)"><h2>Campfire</h2><p>Sit and talk.</p></label>
+<script type="module">
+  // Each picture is a door: touching it follows the link, like clicking a link on any web page.
+  await webspace.ready;
+  for (const img of document.querySelectorAll("img[id^=door-]")) {
+    const slug = img.id.slice(5);
+    const base = img.style.transform;
+    img.addEventListener("click", () => (location.href = `../${slug}/`));
+    img.addEventListener("pointerenter", () => (img.style.transform = base.replace("scale3d(3.2, 3.2, 3.2)", "scale3d(3.4, 3.4, 3.4)")));
+    img.addEventListener("pointerleave", () => (img.style.transform = base));
+  }
+</script>
+</body>
+</html>
