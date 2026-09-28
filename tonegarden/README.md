@@ -35,4 +35,4 @@ exactly as you see it in [`index.html`](index.html).
 ## Credits
 
 Built with the [Webspace Engine](https://github.com/webspace-sdk/webspace-engine) (MPL-2.0), preview build
-[`0.10.0-alpha.7`](https://github.com/webspace-sdk/run). Everything here is CC0.
+[`0.10.0-alpha.8`](https://github.com/webspace-sdk/run). Everything here is CC0.

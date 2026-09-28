@@ -7,6 +7,7 @@ in Chrome, or visit it on the web, and you're standing in it with whoever else i
 
 | World | What it shows |
 |---|---|
+| [Campfire](campfire/) | A place to talk: splat fire and embers under a real 360° night sky, spatial voice, shared flare |
 | [Stargazer](stargazer/) | A galaxy of Gaussian splats over a night hill; shared wishes via `webspace.state` |
 | [Tone Garden](tonegarden/) | A garden everyone plays together: 128 shared cells, a clock-synced sweep of splat light, WebAudio |
 | [Specimen](specimen/) | A real photo-captured cactus as 452k splats; shared watering; scan-to-`.spz` tool |

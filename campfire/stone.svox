@@ -1,0 +1,11 @@
+size = 5 3 5
+scale = 0.09
+origin = -y
+material lighting = smooth, roughness = 1, deform = 5
+  colors = D:#6f6a63 E:#57524c
+voxels
+-DDE- -DED- -----
+DDEDD DEDDE -DDE-
+DEDDE EDDED -DED-
+EDDED DDEDD -EDD-
+-DED- -EDD- -----

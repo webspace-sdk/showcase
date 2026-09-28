@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Campfire</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="A fire under the Milky Way, somewhere quiet. Sit a while and talk with whoever else is here." />
+<script src="https://webspaces.space/run/0.10.0-alpha.8/webspace.js"></script>
+<meta property="og:title" content="Campfire — a webspace" />
+<meta property="og:description" content="A fire under the Milky Way, somewhere quiet. Sit a while and talk with whoever else is here." />
+<meta property="og:image" content="https://webspaces.space/showcase/campfire/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="webspace.environment.type" content="terrain" />
+<meta name="webspace.environment.terrain.type" content="flat" />
+<meta name="webspace.environment.fog" content="off" />
+<meta name="webspace.environment.wrap" content="off" />
+<meta name="webspace.environment.sky" content="sky.jpg" />
+<meta name="webspace.environment.terrain.colors.sky" content="#0b0d18" />
+<meta name="webspace.environment.terrain.colors.ground" content="#3a3128" />
+<meta name="webspace.environment.terrain.colors.grass" content="#4a4430" />
+<meta name="webspace.environment.terrain.colors.edge" content="#221c16" />
+<meta name="webspace.environment.terrain.colors.rock" content="#5b554d" />
+<meta name="webspace.environment.terrain.colors.leaves" content="#3f4a2c" />
+<meta name="webspace.environment.terrain.colors.bark" content="#3a2a1d" />
+<meta name="webspace.environment.terrain.colors.water" content="#1d2a3a" />
+<meta name="webspace.environment.spawn_point.transform" content="translate3d(0cm, 0cm, 120cm)" />
+<meta name="webspace.environment.spawn_point.radius" content="1" />
+</head>
+<body>
+<!-- The fire: flames, glow and embers are Gaussian splats that add light (mix-blend-mode: plus-lighter) -->
+<model id="glow" src="glow.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(0cm, 80cm, -250cm)"></model>
+<model id="flame-a" src="flame-a.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(0cm, 85cm, -250cm)"></model>
+<model id="flame-b" src="flame-b.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(8cm, 85cm, -244cm)"></model>
+<model id="flame-c" src="flame-c.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(-8cm, 85cm, -256cm)"></model>
+<model id="embers-1" src="embers.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(0cm, 90cm, -250cm)"></model>
+<model id="embers-2" src="embers.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(0cm, 90cm, -250cm) rotateY(1.7rad)"></model>
+
+<!-- The logs it burns, leaning together -->
+<model id="burn-1" src="log.svox" style="transform: translate3d(0cm, 80cm, -250cm) rotateY(0.3rad) rotateZ(0.9rad)"></model>
+<model id="burn-2" src="log.svox" style="transform: translate3d(0cm, 80cm, -250cm) rotateY(2.4rad) rotateZ(0.9rad)"></model>
+<model id="burn-3" src="log.svox" style="transform: translate3d(0cm, 80cm, -250cm) rotateY(4.5rad) rotateZ(0.9rad)"></model>
+
+<!-- A ring of stones -->
+<model id="stone-1" src="stone.svox" style="transform: translate3d(70cm, 75cm, -250cm) rotateY(0.2rad)"></model>
+<model id="stone-2" src="stone.svox" style="transform: translate3d(43cm, 75cm, -195cm) rotateY(1.1rad)"></model>
+<model id="stone-3" src="stone.svox" style="transform: translate3d(-12cm, 75cm, -181cm) rotateY(2rad) scale3d(0.9, 1.1, 0.9)"></model>
+<model id="stone-4" src="stone.svox" style="transform: translate3d(-61cm, 75cm, -216cm) rotateY(2.9rad)"></model>
+<model id="stone-5" src="stone.svox" style="transform: translate3d(-66cm, 75cm, -274cm) rotateY(3.6rad) scale3d(1.1, 0.9, 1.1)"></model>
+<model id="stone-6" src="stone.svox" style="transform: translate3d(-24cm, 75cm, -316cm) rotateY(4.4rad)"></model>
+<model id="stone-7" src="stone.svox" style="transform: translate3d(32cm, 75cm, -312cm) rotateY(5.2rad) scale3d(0.9, 1, 0.9)"></model>
+
+<!-- Somewhere to sit -->
+<model id="seat-1" src="log.svox" style="transform: translate3d(0cm, 75cm, -30cm) scale3d(1.6, 1.6, 1.6)"></model>
+<model id="seat-2" src="log.svox" style="transform: translate3d(-230cm, 75cm, -260cm) rotateY(1.45rad) scale3d(1.6, 1.6, 1.6)"></model>
+<model id="seat-3" src="log.svox" style="transform: translate3d(220cm, 75cm, -290cm) rotateY(1.8rad) scale3d(1.6, 1.6, 1.6)"></model>
+<model id="seat-4" src="log.svox" style="transform: translate3d(20cm, 75cm, -480cm) rotateY(3.05rad) scale3d(1.6, 1.6, 1.6)"></model>
+
+<!-- The woodpile: touch it to toss a log on -->
+<model id="wood-1" src="log.svox" style="transform: translate3d(-150cm, 75cm, -150cm) rotateY(0.5rad) scale3d(0.9, 0.9, 0.9)"></model>
+<model id="wood-2" src="log.svox" style="transform: translate3d(-138cm, 75cm, -132cm) rotateY(0.45rad) scale3d(0.9, 0.9, 0.9)"></model>
+<model id="wood-3" src="log.svox" style="transform: translate3d(-144cm, 99cm, -141cm) rotateY(0.55rad) scale3d(0.9, 0.9, 0.9)"></model>
+
+<label id="sign" style="color: #f3e6d0; background-color: transparent; -webkit-text-stroke-color: #1a120c; font-family: serif; transform: translate3d(-260cm, 250cm, -380cm) rotateY(0.6rad) scale3d(1.4, 1.4, 1.4)"><h1>Campfire</h1><p>Sit a while. Unmute to talk.</p><p>Touch the woodpile to toss a log on the fire.</p></label>
+
+<script type="module">
+  // Everything that moves here is driven from the clock, so the fire flickers the same for everyone.
+  await webspace.ready;
+
+  const FIRE = [0, 85, -250]; // cm
+  const at = (x, y, z) => `translate3d(${(FIRE[0] + x).toFixed(1)}cm, ${(FIRE[1] + y).toFixed(1)}cm, ${(FIRE[2] + z).toFixed(1)}cm)`;
+  const el = id => document.getElementById(id);
+  const flames = [
+    { el: el("flame-a"), dx: 0, dz: 0, phase: 0 },
+    { el: el("flame-b"), dx: 8, dz: 6, phase: 2.1 },
+    { el: el("flame-c"), dx: -8, dz: -6, phase: 4.3 }
+  ];
+  const glow = el("glow");
+  const embers = [el("embers-1"), el("embers-2")];
+
+  // A log on the fire makes it roar for a few seconds, for everyone
+  let flaredAt = 0;
+  for (const id of ["wood-1", "wood-2", "wood-3"]) el(id).addEventListener("click", () => webspace.state.set("log", Date.now()));
+  webspace.state.addEventListener("change", ({ detail: { key, value } }) => {
+    if (key === "log" && Date.now() - value < 6000) flaredAt = value;
+  });
+
+  const noise = (t, p) => Math.sin(t * 7.3 + p) * 0.5 + Math.sin(t * 13.1 + p * 1.7) * 0.3 + Math.sin(t * 23.7 + p * 0.3) * 0.2;
+
+  const frame = () => {
+    const now = Date.now();
+    const t = now / 1000;
+    const flare = flaredAt ? Math.exp(-(now - flaredAt) / 2200) : 0;
+    const roar = 1 + flare * 0.9;
+
+    for (const f of flames) {
+      const n = noise(t, f.phase);
+      const sy = (1 + n * 0.18) * roar;
+      const sxz = (1 - n * 0.08) * (1 + flare * 0.35);
+      f.el.style.transform = `${at(f.dx, 0, f.dz)} rotateY(${(t * 0.6 + f.phase).toFixed(3)}rad) scale3d(${sxz.toFixed(3)}, ${sy.toFixed(3)}, ${sxz.toFixed(3)})`;
+    }
+
+    const g = 0.85 + noise(t * 0.5, 1) * 0.15 + flare * 0.6;
+    glow.style.opacity = Math.min(1, g).toFixed(3);
+    glow.style.transform = `${at(0, -5, 0)} scale3d(${(1 + flare * 0.5).toFixed(3)}, 1, ${(1 + flare * 0.5).toFixed(3)})`;
+
+    // Two ember columns, half a cycle apart, rise and wrap: an endless stream of sparks
+    const speed = 0.45 + flare * 0.9;
+    embers.forEach((e, i) => {
+      const cycle = ((t * speed) / 4 + i * 0.5) % 1;
+      e.style.opacity = Math.sin(cycle * Math.PI).toFixed(3);
+      e.style.transform = `${at(0, cycle * 120 - 60, 0)} rotateY(${(i * 1.7 + t * 0.2).toFixed(3)}rad)`;
+    });
+
+    requestAnimationFrame(frame);
+  };
+  frame();
+</script>
+</body>
+</html>
