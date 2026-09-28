@@ -8,6 +8,7 @@ in Chrome, or visit it on the web, and you're standing in it with whoever else i
 | World | What it shows |
 |---|---|
 | [Stargazer](stargazer/) | A galaxy of Gaussian splats over a night hill; shared wishes via `webspace.state` |
+| [Tone Garden](tonegarden/) | A garden everyone plays together: 128 shared cells, a clock-synced sweep of splat light, WebAudio |
 | [Specimen](specimen/) | A real photo-captured cactus as 452k splats; shared watering; scan-to-`.spz` tool |
 
 Every world here is meant to be read and remixed. Start from any folder, or from

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tone Garden</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="A garden that plays itself. Touch a bud to make it bloom; a slow light plays whatever is blooming, for everyone here at once." />
+<script src="https://webspaces.space/run/0.10.0-alpha.5/webspace.js"></script>
+<meta property="og:title" content="Tone Garden — a webspace" />
+<meta property="og:description" content="A garden that plays itself. Touch a bud to make it bloom; the light plays whatever is blooming, for everyone here at once." />
+<meta property="og:image" content="https://webspaces.space/showcase/tonegarden/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="webspace.environment.type" content="terrain" />
+<meta name="webspace.environment.terrain.type" content="flat" />
+<meta name="webspace.environment.terrain.seed" content="3" />
+<meta name="webspace.environment.wrap" content="off" />
+<meta name="webspace.environment.terrain.colors.sky" content="#7f8fd6" />
+<meta name="webspace.environment.terrain.colors.ground" content="#46613f" />
+<meta name="webspace.environment.terrain.colors.grass" content="#6f9a55" />
+<meta name="webspace.environment.terrain.colors.edge" content="#334a30" />
+<meta name="webspace.environment.terrain.colors.rock" content="#8a8578" />
+<meta name="webspace.environment.terrain.colors.leaves" content="#f2a6b8" />
+<meta name="webspace.environment.terrain.colors.bark" content="#5b4636" />
+<meta name="webspace.environment.terrain.colors.water" content="#5f8fb8" />
+<meta name="webspace.environment.spawn_point.transform" content="translate3d(0cm, 0cm, 150cm)" />
+<meta name="webspace.environment.spawn_point.radius" content="1.5" />
+</head>
+<body>
+<label id="sign" style="color: #2d2433; background-color: #f6efe4; font-family: serif; transform: translate3d(-620cm, 230cm, -330cm) rotateY(0.7rad) scale3d(1.2, 1.2, 1.2)"><h1>Tone Garden</h1><p>Touch a bud to make it bloom.</p><p>The light plays whatever is blooming, for everyone here at once. Plant something together.</p><p>🍂 clears the garden.</p></label>
+<div id="leaves" style="font-family: emoji; transform: translate3d(-560cm, 130cm, -260cm) scale3d(0.8, 0.8, 0.8)">🍂</div>
+<model id="sweep" src="sweep.spz" style="mix-blend-mode: plus-lighter; transform: translate3d(-480cm, 75cm, -330cm)"></model>
+<script type="module">
+  // ---------------------------------------------------------------------------------------------
+  // The garden: 16 columns (time) x 8 rows (pitch). Each cell is shared state, so everyone sees
+  // and hears the same garden. The light's position comes from the clock, so it's in step for all.
+  // ---------------------------------------------------------------------------------------------
+  await webspace.ready;
+
+  const COLS = 16, ROWS = 8, STEP = 0.3125; // seconds per column (96 bpm eighth notes)
+  const X0 = -450, Z0 = -330, DX = 60, DZ = -60, Y = 95; // centimeters
+  const BLOOMS = ["🌻", "🌼", "🌷", "🌹", "🌺", "🌸", "💮", "🌸"];
+  const NOTES = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25]; // C major pentatonic
+  // A gentle melody for the first visitor; any cell someone touches replaces it for everyone.
+  const SEED = ["...o....", "......o.", "....o...", "........", "..o.....", "....o...", "......o.", "........",
+                "o.......", "..o.....", ".....o..", "........", "...o....", ".....o..", ".......o", "........"];
+
+  const key = (c, r) => `cell-${c}-${r}`;
+  const isOn = (c, r) => (webspace.state.has(key(c, r)) ? !!webspace.state.get(key(c, r)) : SEED[c][r] === "o");
+  const place = (c, r, s = 1) =>
+    `translate3d(${X0 + c * DX}cm, ${Y}cm, ${Z0 + r * DZ}cm) scale3d(${(0.55 * s).toFixed(3)}, ${(0.55 * s).toFixed(3)}, ${(0.55 * s).toFixed(3)})`;
+
+  // Plant the buds
+  const cells = [];
+  for (let c = 0; c < COLS; c++) {
+    cells[c] = [];
+    for (let r = 0; r < ROWS; r++) {
+      const el = document.createElement("div");
+      el.id = key(c, r);
+      el.style.fontFamily = "emoji";
+      el.style.transform = place(c, r);
+      el.textContent = isOn(c, r) ? BLOOMS[r] : "🌱";
+      el.addEventListener("click", () => {
+        audio.wake();
+        const on = !isOn(c, r);
+        webspace.state.set(key(c, r), on);
+        if (on) audio.pluck(NOTES[r], 0.9);
+      });
+      document.body.append(el);
+      cells[c][r] = { el, pulse: 0 };
+    }
+  }
+
+  const render = (c, r) => (cells[c][r].el.textContent = isOn(c, r) ? BLOOMS[r] : "🌱");
+
+  webspace.state.addEventListener("change", ({ detail: { key: k, value } }) => {
+    if (k === "clear") {
+      for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) render(c, r);
+      return;
+    }
+    const m = /^cell-(\d+)-(\d+)$/.exec(k);
+    if (m) render(+m[1], +m[2]);
+  });
+
+  document.getElementById("leaves").addEventListener("click", () => {
+    for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) webspace.state.set(key(c, r), false);
+    webspace.state.set("clear", Date.now());
+  });
+
+  // ---------------------------------------------------------------------------------------------
+  // Sound: a soft plucked tone with a little room around it. Browsers need a gesture before audio
+  // can start, so the first click or key press anywhere wakes it up.
+  // ---------------------------------------------------------------------------------------------
+  const audio = (() => {
+    let ctx = null, out = null, reverb = null;
+    const wake = () => {
+      if (ctx) return ctx.state === "suspended" && ctx.resume();
+      ctx = new AudioContext();
+      out = ctx.createGain();
+      out.gain.value = 0.6;
+      reverb = ctx.createConvolver();
+      const len = ctx.sampleRate * 2.2, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        const d = ir.getChannelData(ch);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+      }
+      reverb.buffer = ir;
+      const wet = ctx.createGain();
+      wet.gain.value = 0.35;
+      out.connect(ctx.destination);
+      out.connect(reverb).connect(wet).connect(ctx.destination);
+    };
+    const pluck = (freq, level = 1) => {
+      if (!ctx || ctx.state !== "running") return;
+      const t = ctx.currentTime;
+      const env = ctx.createGain();
+      env.gain.setValueAtTime(0.0001, t);
+      env.gain.exponentialRampToValueAtTime(0.28 * level, t + 0.012);
+      env.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+      const tone = ctx.createBiquadFilter();
+      tone.type = "lowpass";
+      tone.frequency.setValueAtTime(freq * 6, t);
+      tone.frequency.exponentialRampToValueAtTime(freq * 1.5, t + 0.8);
+      for (const [mult, type, g] of [[1, "triangle", 1], [2, "sine", 0.25], [3, "sine", 0.08]]) {
+        const osc = ctx.createOscillator();
+        const og = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq * mult;
+        og.gain.value = g;
+        osc.connect(og).connect(tone);
+        osc.start(t);
+        osc.stop(t + 1.7);
+      }
+      tone.connect(env).connect(out);
+    };
+    addEventListener("pointerdown", wake, true);
+    addEventListener("keydown", wake, true);
+    return { wake, pluck };
+  })();
+
+  // Quieter the farther you wander from the garden
+  const levelForListener = () => {
+    const p = webspace.player.position;
+    if (!p) return 1;
+    const d = Math.hypot(p.x - 0, p.z - (Z0 / 100 - 2));
+    return Math.max(0.05, Math.min(1, 6 / Math.max(d, 1)));
+  };
+
+  // ---------------------------------------------------------------------------------------------
+  // The light sweeps the columns; each column it reaches plays and its blossoms pulse.
+  // ---------------------------------------------------------------------------------------------
+  const sweep = document.getElementById("sweep");
+  let lastStep = -1;
+  const frame = () => {
+    const t = Date.now() / 1000;
+    const pos = (t / STEP) % COLS;
+    const step = Math.floor(pos);
+    sweep.style.transform = `translate3d(${(X0 + pos * DX - DX / 2).toFixed(1)}cm, 75cm, ${Z0 + 30}cm)`; // the curtain spans the rows toward -z
+
+    if (step !== lastStep) {
+      lastStep = step;
+      const level = levelForListener();
+      for (let r = 0; r < ROWS; r++) {
+        if (isOn(step, r)) {
+          audio.pluck(NOTES[r], level);
+          cells[step][r].pulse = 1;
+        }
+      }
+    }
+
+    for (let c = 0; c < COLS; c++) {
+      for (let r = 0; r < ROWS; r++) {
+        const cell = cells[c][r];
+        if (cell.pulse > 0) {
+          cell.pulse = Math.max(0, cell.pulse - 0.06);
+          cell.el.style.transform = place(c, r, 1 + 0.5 * cell.pulse * cell.pulse);
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  };
+  frame();
+</script>
+</body>
+</html>
