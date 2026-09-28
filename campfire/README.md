@@ -31,4 +31,4 @@ Send someone the link. That's the whole invitation.
 
 Sky: [Rogland Clear Night](https://polyhaven.com/a/rogland_clear_night) by Poly Haven, CC0. Built with the
 [Webspace Engine](https://github.com/webspace-sdk/webspace-engine) (MPL-2.0), preview build
-[`0.10.0-alpha.9`](https://github.com/webspace-sdk/run). Everything else here is CC0.
+[`0.10.0-alpha.10`](https://github.com/webspace-sdk/run). Everything else here is CC0.
