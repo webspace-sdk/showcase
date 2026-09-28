@@ -16,7 +16,8 @@ as long as people are around.
 ```
 
 That's the whole trick. The rest of [`index.html`](index.html) is a plaque (a `<label>`), a water drop (an emoji
-`<div>`), a desert (a few `<meta>` tags), and a short script.
+`<div>`), a desert (a few `<meta>` tags), a real sky (`<meta name="webspace.environment.sky" content="sky.jpg">`,
+a 360° photo), and a short script.
 
 ## Bring your own scan
 
@@ -36,6 +37,6 @@ This capture went from a 107 MB `.ply` to a 7.3 MB `.spz`. Put the `.spz` next t
 
 ## Credits
 
-Capture: [steam studio](https://www.steam-studio.jp), released under CC0. Built with the
+Capture: [steam studio](https://www.steam-studio.jp), released under CC0. Sky: [Kloppenheim 06 (pure sky)](https://polyhaven.com/a/kloppenheim_06_puresky) by Poly Haven, CC0. Built with the
 [Webspace Engine](https://github.com/webspace-sdk/webspace-engine) (MPL-2.0), preview build
-[`0.10.0-alpha.5`](https://github.com/webspace-sdk/run).
+[`0.10.0-alpha.6`](https://github.com/webspace-sdk/run).
