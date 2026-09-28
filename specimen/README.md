@@ -39,4 +39,4 @@ This capture went from a 107 MB `.ply` to a 7.3 MB `.spz`. Put the `.spz` next t
 
 Capture: [steam studio](https://www.steam-studio.jp), released under CC0. Sky: [Kloppenheim 06 (pure sky)](https://polyhaven.com/a/kloppenheim_06_puresky) by Poly Haven, CC0. Built with the
 [Webspace Engine](https://github.com/webspace-sdk/webspace-engine) (MPL-2.0), preview build
-[`0.10.0-alpha.8`](https://github.com/webspace-sdk/run).
+[`0.10.0-alpha.9`](https://github.com/webspace-sdk/run).
