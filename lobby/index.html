@@ -27,22 +27,23 @@
 </head>
 <body>
 <label id="welcome" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(0cm, 440cm, -520cm) scale3d(2.4, 2.4, 2.4)"><h1>Webspaces</h1><p>Each of these is a web page you can walk into. Touch one to step through.</p></label>
-<img id="door-stargazer" src="../stargazer/preview.png" style="transform: translate3d(-357cm, 270cm, -349cm) rotateY(0.890rad) scale3d(3.2, 3.2, 3.2)">
-<label id="title-stargazer" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-343cm, 160cm, -338cm) rotateY(0.890rad) scale3d(1.7, 1.7, 1.7)"><h2>Stargazer</h2><p>A galaxy of Gaussian splats.</p></label>
-<img id="door-specimen" src="../specimen/preview.png" style="transform: translate3d(-134cm, 270cm, -500cm) rotateY(0.297rad) scale3d(3.2, 3.2, 3.2)">
-<label id="title-specimen" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-129cm, 160cm, -482cm) rotateY(0.297rad) scale3d(1.7, 1.7, 1.7)"><h2>Specimen</h2><p>A real cactus, captured.</p></label>
-<img id="door-tonegarden" src="../tonegarden/preview.png" style="transform: translate3d(134cm, 270cm, -500cm) rotateY(-0.297rad) scale3d(3.2, 3.2, 3.2)">
-<label id="title-tonegarden" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(129cm, 160cm, -482cm) rotateY(-0.297rad) scale3d(1.7, 1.7, 1.7)"><h2>Tone Garden</h2><p>Make music together.</p></label>
-<img id="door-campfire" src="../campfire/preview.png" style="transform: translate3d(357cm, 270cm, -349cm) rotateY(-0.890rad) scale3d(3.2, 3.2, 3.2)">
-<label id="title-campfire" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(343cm, 160cm, -338cm) rotateY(-0.890rad) scale3d(1.7, 1.7, 1.7)"><h2>Campfire</h2><p>Sit and talk.</p></label>
+<img id="door-stargazer" data-href="../stargazer/" src="../stargazer/preview.png" style="transform: translate3d(-416cm, 270cm, -300cm) rotateY(1.047rad) scale3d(3, 3, 3)">
+<label id="title-stargazer" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-399cm, 160cm, -290cm) rotateY(1.047rad) scale3d(1.6, 1.6, 1.6)"><h2>Stargazer</h2><p>A galaxy of Gaussian splats.</p></label>
+<img id="door-specimen" data-href="../specimen/" src="../specimen/preview.png" style="transform: translate3d(-240cm, 270cm, -476cm) rotateY(0.524rad) scale3d(3, 3, 3)">
+<label id="title-specimen" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(-230cm, 160cm, -459cm) rotateY(0.524rad) scale3d(1.6, 1.6, 1.6)"><h2>Specimen</h2><p>A real cactus, captured.</p></label>
+<img id="door-tonegarden" data-href="../tonegarden/" src="../tonegarden/preview.png" style="transform: translate3d(0cm, 270cm, -540cm) rotateY(-0.000rad) scale3d(3, 3, 3)">
+<label id="title-tonegarden" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(0cm, 160cm, -521cm) rotateY(-0.000rad) scale3d(1.6, 1.6, 1.6)"><h2>Tone Garden</h2><p>Make music together.</p></label>
+<img id="door-campfire" data-href="../campfire/" src="../campfire/preview.png" style="transform: translate3d(240cm, 270cm, -476cm) rotateY(-0.524rad) scale3d(3, 3, 3)">
+<label id="title-campfire" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(230cm, 160cm, -459cm) rotateY(-0.524rad) scale3d(1.6, 1.6, 1.6)"><h2>Campfire</h2><p>Sit and talk.</p></label>
+<img id="door-kit" data-href="https://webspaces.space/kit/world.html" src="https://webspaces.space/kit/preview.png" style="transform: translate3d(416cm, 270cm, -300cm) rotateY(-1.047rad) scale3d(3, 3, 3)">
+<label id="title-kit" style="color: #f4ece0; background-color: transparent; -webkit-text-stroke-color: #120d1c; font-family: serif; transform: translate3d(399cm, 160cm, -290cm) rotateY(-1.047rad) scale3d(1.6, 1.6, 1.6)"><h2>The Kit</h2><p>Free models for your world.</p></label>
 <script type="module">
   // Each picture is a door: touching it follows the link, like clicking a link on any web page.
   await webspace.ready;
   for (const img of document.querySelectorAll("img[id^=door-]")) {
-    const slug = img.id.slice(5);
-    const base = img.style.transform;
-    img.addEventListener("click", () => (location.href = `../${slug}/`));
-    img.addEventListener("pointerenter", () => (img.style.transform = base.replace("scale3d(3.2, 3.2, 3.2)", "scale3d(3.4, 3.4, 3.4)")));
+        const base = img.style.transform;
+    img.addEventListener("click", () => (location.href = img.dataset.href));
+    img.addEventListener("pointerenter", () => (img.style.transform = base.replace("scale3d(3, 3, 3)", "scale3d(3.2, 3.2, 3.2)")));
     img.addEventListener("pointerleave", () => (img.style.transform = base));
   }
 </script>
